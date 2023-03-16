@@ -1,20 +1,20 @@
-# Right now this has been set to 3 x 3 classic tic-tac-toe
-# If you want the size to get bigger, modify the grid, the remain list and the board_format accordingly
+# Updated: limited the allowed size, board formatting is clunkier
+# This is it for now
 
 def print_grid(lst):
     rowSize = len(lst)
     colSize = len(lst[0])
     for i in range(rowSize):
-        print('-------------')
+        print('-' + '-----' * (rowSize + 1))
         row = "|"
         for j in range(colSize):
             if lst[i][j] == 0:
-                row += '   |'
+                row += '     |'
             else:
-                row += ' {} |'.format(lst[i][j])
+                row += '  {}  |'.format(lst[i][j])
         print(row)
         row = '|'
-    print('-------------')
+    print('-' + '-----' * (rowSize + 1))
 
 def test_input(remain):
     try:
@@ -74,7 +74,7 @@ def check(grid, remain, P1, P2):
     return 1
 
 def letsplay():
-    grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    grid = generate_board()
     P1 = input("Choose a digit to play as player one: ")
     while (len(P1) != 1):
         P1 = input("Invalid name, try again: ")
@@ -86,12 +86,13 @@ def letsplay():
     print('\n******************')
     print("Great, let's play!")
     print('******************\n')
-    remain = [i for i in range(1, 10)]
-    board_format = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    remain = [i for i in range(1, len(grid) ** 2 + 1)]
     print("Choose a number from 1 to 9 with respect to the following\nboard format:")
-    print_grid(board_format)
-    colInd = (0, 1, 2, 0, 1, 2, 0, 1, 2)
-    rowInd = (0, 0, 0, 1, 1, 1, 2, 2, 2)
+    print_grid(grid)
+    colInd = [i for i in range(len(grid))] * len(grid)
+    rowInd = []
+    for i in range(len(grid)):
+        rowInd += [i] * len(grid)
     while True:
         
         print("\nIt's player 1's turn: ")
@@ -108,6 +109,19 @@ def letsplay():
         grid[rowInd[turn2 - 1]][colInd[turn2 - 1]] = P2;
         print("The grid currently looks like this: ")
         print_grid(grid)
-        check(grid, remain, P1, P2)
+        if check(grid, remain, P1, P2) == 0: break
+
+def generate_board():
+    try:
+        size = int(input("Enter the Tic-Tac-Toe size from 3 to 5: "))
+    except:
+        size = int(input("Invalid, try again: "))
+    while size < 3 or size > 5:
+        size = int(input("Invalid, try again: "))
+    grid = []
+    for i in range(size):
+        grid.append([0] * size)
+    return grid
+
 
 letsplay()
