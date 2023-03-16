@@ -1,5 +1,5 @@
 # Right now this has been set to 3 x 3 classic tic-tac-toe
-# If you want the size to get bigger, modify the grid, the remain list and the display grid accordingly
+# If you want the size to get bigger, modify the grid, the remain list and the board_format accordingly
 
 def print_grid(lst):
     rowSize = len(lst)
