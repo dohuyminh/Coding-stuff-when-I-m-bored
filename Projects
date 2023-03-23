@@ -1,24 +1,25 @@
-# Updated: limited the allowed size, board formatting is clunkier
-# This is it for now
+# Updated: Grid limited to 3x3 or 5x5 for aesthetics purpose only
+# This should be the final update
+# Most of the stuff used for this piece is approachable for beginners. 
 
 def print_grid(lst):
     rowSize = len(lst)
     colSize = len(lst[0])
     for i in range(rowSize):
-        print('-' + '-----' * (rowSize + 1))
+        print('-' + '----' * (rowSize))
         row = "|"
         for j in range(colSize):
             if lst[i][j] == 0:
-                row += '     |'
+                row += '   |'
             else:
-                row += '  {}  |'.format(lst[i][j])
+                row += ' {} |'.format(lst[i][j])
         print(row)
         row = '|'
-    print('-' + '-----' * (rowSize + 1))
+    print('-' + '----' * (rowSize))
 
-def test_input(remain):
+def test_input(remain, grid):
     try:
-        player = int(input("Enter a number from 1 to 9 to make a move on the grid: "))
+        player = int(input("Enter a number from 1 to {} to make a move on the grid: ".format(len(grid) ** 2)))
     except:
         player = int(input("Invalid input, do it again: "))
     while (player not in remain):
@@ -96,7 +97,7 @@ def letsplay():
     while True:
         
         print("\nIt's player 1's turn: ")
-        turn1 = test_input(remain)
+        turn1 = test_input(remain, grid)
         remain.remove(turn1)
         grid[rowInd[turn1 - 1]][colInd[turn1 - 1]] = P1;
         print("The grid currently looks like this: ")
@@ -104,7 +105,7 @@ def letsplay():
         if check(grid, remain, P1, P2) == 0: break
         
         print("\nIt's player 2's turn: ")
-        turn2 = test_input(remain)
+        turn2 = test_input(remain, grid)
         remain.remove(turn2)
         grid[rowInd[turn2 - 1]][colInd[turn2 - 1]] = P2;
         print("The grid currently looks like this: ")
@@ -113,15 +114,14 @@ def letsplay():
 
 def generate_board():
     try:
-        size = int(input("Enter the Tic-Tac-Toe size from 3 to 5: "))
+        size = int(input("Enter the Tic-Tac-Toe size (3 or 5): "))
     except:
         size = int(input("Invalid, try again: "))
-    while size < 3 or size > 5:
+    while size != 3 and size != 5:
         size = int(input("Invalid, try again: "))
     grid = []
     for i in range(size):
         grid.append([0] * size)
     return grid
-
 
 letsplay()
