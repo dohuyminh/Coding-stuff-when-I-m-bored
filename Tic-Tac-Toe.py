@@ -1,6 +1,5 @@
 # Updated: Grid limited to 3x3 or 5x5 for aesthetics purpose only
 # This should be the final update
-# Most of the stuff used for this piece is approachable for beginners. 
 # Code by Huy Minh Do. LinkedIn: https://www.linkedin.com/in/huy-minh-%C4%91%E1%BB%97-11096526a/
 # Email: minhdohuy2111@gmail.com
 
