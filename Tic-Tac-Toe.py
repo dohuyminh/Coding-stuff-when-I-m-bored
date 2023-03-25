@@ -1,24 +1,38 @@
-# Updated: Grid limited to 3x3 or 5x5 for aesthetics purpose only
+# Code for playing Tic-Tac-Toe (3x3 or 5x5) on Terminal 
+
+# Updated again: Added number denotation for the board for ease of tracking
+# Added 1-player mode (vs computer)
 # This should be the final update
 # Code by Huy Minh Do. LinkedIn: https://www.linkedin.com/in/huy-minh-%C4%91%E1%BB%97-11096526a/
 # Email: minhdohuy2111@gmail.com
 
+import random
+
 def print_grid(lst):
+    numRow = 1
     rowSize = len(lst)
     colSize = len(lst[0])
+    add_row = "     "
+    for a in range(rowSize):
+        add_row += "+{}  ".format(a)
+    print(add_row)
     for i in range(rowSize):
-        print('-' + '----' * (rowSize))
-        row = "|"
+        print('    -' + '----' * (rowSize))
+        row = f'{numRow:<2}  |'
         for j in range(colSize):
             if lst[i][j] == 0:
                 row += '   |'
             else:
                 row += ' {} |'.format(lst[i][j])
         print(row)
-        row = '|'
-    print('-' + '----' * (rowSize))
+        numRow += rowSize;
+        row = f'{numRow:<2}  |'
+    print('    -' + '----' * (rowSize))
 
-def test_input(remain, grid):
+def test_input(remain, grid, comp):
+    if comp == "COMP":
+        player = random.choice(remain)
+        return player
     try:
         player = int(input("Enter a number from 1 to {} to make a move on the grid: ".format(len(grid) ** 2)))
     except:
@@ -75,7 +89,38 @@ def check(grid, remain, P1, P2):
             return 0
     return 1
 
+def generate_board():
+    try:
+        size = int(input("Enter the Tic-Tac-Toe size (3 or 5): "))
+    except:
+        size = int(input("Invalid, try again: "))
+    while size != 3 and size != 5:
+        size = int(input("Invalid, try again: "))
+    grid = []
+    for i in range(size):
+        grid.append([0] * size)
+    return grid
+
 def letsplay():
+    try:
+        comp = int(input("1-player or 2 players? (1/2): "))
+    except:
+        comp = int(input("Invalid, try again: "))
+    while (comp != 1 and comp != 2):
+        comp = int(input("Invalid, try again: "))
+    player_dict = {}
+    if comp == 1:
+        try:
+            choice = int(input("What player do you want to play as? (1/2): "))
+        except:
+            choice = int(input("Invalid, try again: "))
+        while (choice != 1 and choice != 2):
+            choice = int(input("Invalid, try again: "))
+        player_dict[choice] = "PLAYER"
+        if choice != 1: player_dict[1] = "COMP"
+        elif choice != 2: player_dict[2] = "COMP"
+    elif comp == 2:
+        player_dict = {1: "PLAYER", 2: "PLAYER"}
     grid = generate_board()
     P1 = input("Choose a digit to play as player one: ")
     while (len(P1) != 1):
@@ -98,7 +143,7 @@ def letsplay():
     while True:
         
         print("\nIt's player 1's turn: ")
-        turn1 = test_input(remain, grid)
+        turn1 = test_input(remain, grid, player_dict[1])
         remain.remove(turn1)
         grid[rowInd[turn1 - 1]][colInd[turn1 - 1]] = P1;
         print("The grid currently looks like this: ")
@@ -106,23 +151,12 @@ def letsplay():
         if check(grid, remain, P1, P2) == 0: break
         
         print("\nIt's player 2's turn: ")
-        turn2 = test_input(remain, grid)
+        turn2 = test_input(remain, grid, player_dict[2])
         remain.remove(turn2)
         grid[rowInd[turn2 - 1]][colInd[turn2 - 1]] = P2;
         print("The grid currently looks like this: ")
         print_grid(grid)
         if check(grid, remain, P1, P2) == 0: break
 
-def generate_board():
-    try:
-        size = int(input("Enter the Tic-Tac-Toe size (3 or 5): "))
-    except:
-        size = int(input("Invalid, try again: "))
-    while size != 3 and size != 5:
-        size = int(input("Invalid, try again: "))
-    grid = []
-    for i in range(size):
-        grid.append([0] * size)
-    return grid
 
 letsplay()
